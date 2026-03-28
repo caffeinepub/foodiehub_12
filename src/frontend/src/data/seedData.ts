@@ -155,6 +155,17 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
       "/assets/uploads/shopping-019d360f-ee53-7533-83a8-a3835da3f6a3-1.webp",
     isAvailable: true,
   },
+  {
+    id: BigInt(15),
+    name: "Tata Gluco+ Lemony Zing",
+    category: "Drinks",
+    price: 15,
+    description:
+      "Tata Gluco+ Insta Energy drink with added lemon flavour and apple juice. Refreshing and energising. Best served chilled.",
+    imageUrl:
+      "/assets/uploads/71km7jsjzfl._sl1500-019d3619-f7db-715a-aa62-f0ecffff9fc9-1.jpg",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -182,4 +193,5 @@ export const RATINGS: Record<string, number> = {
   "Thums Up (2.25 ltr)": 4.6,
   "Sting Energy Drink": 4.7,
   "Predator Energy (Gold Strike)": 4.8,
+  "Tata Gluco+ Lemony Zing": 4.5,
 };
