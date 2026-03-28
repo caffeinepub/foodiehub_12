@@ -176,6 +176,16 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
     imageUrl: "",
     isAvailable: true,
   },
+  {
+    id: BigInt(17),
+    name: "Mistry Drink 🍷",
+    category: "Drinks",
+    price: 60,
+    description:
+      "Mistry Drink -- a refreshing and unique beverage. Best served chilled.",
+    imageUrl: "",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -205,4 +215,5 @@ export const RATINGS: Record<string, number> = {
   "Predator Energy (Gold Strike)": 4.8,
   "Tata Gluco+ Lemony Zing": 4.5,
   "Mistry Chips": 4.4,
+  "Mistry Drink 🍷": 4.5,
 };
