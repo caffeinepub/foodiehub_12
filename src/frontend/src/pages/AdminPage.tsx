@@ -84,8 +84,16 @@ export default function AdminPage() {
   const [form, setForm] = useState<Omit<FoodItem, "id">>(EMPTY_FORM);
   const [showForm, setShowForm] = useState(false);
 
-  const isLoggedIn = !!identity;
+  const isPhoneLoggedIn =
+    localStorage.getItem("foodiehub_phone_auth") === "true";
+  const isLoggedIn = !!identity || isPhoneLoggedIn;
+  const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
   const isLoggingIn = loginStatus === "logging-in";
+
+  const handleSignOut = () => {
+    localStorage.removeItem("foodiehub_phone_auth");
+    clear();
+  };
 
   const handleFormChange = (
     key: keyof Omit<FoodItem, "id">,
@@ -186,7 +194,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!isAdmin) {
+  if (!effectiveIsAdmin) {
     return (
       <div
         className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4"
@@ -199,7 +207,7 @@ export default function AdminPage() {
         </p>
         <Button
           variant="outline"
-          onClick={() => clear()}
+          onClick={handleSignOut}
           className="rounded-xl"
         >
           <LogOut className="w-4 h-4 mr-2" />
@@ -244,7 +252,7 @@ export default function AdminPage() {
             </Link>
             <Button
               variant="ghost"
-              onClick={() => clear()}
+              onClick={handleSignOut}
               className="rounded-xl text-muted-foreground"
               data-ocid="admin.secondary_button"
             >

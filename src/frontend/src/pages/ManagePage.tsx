@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   Globe,
   LayoutDashboard,
@@ -40,17 +40,26 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function ManagePage() {
-  const { login, clear, loginStatus, identity, isInitializing } =
+  const { clear, loginStatus, identity, isInitializing } =
     useInternetIdentity();
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
   const { data: backendItems } = useAllFoodItems();
   const { data: orders } = useAllOrders();
+  const navigate = useNavigate();
 
+  const isPhoneLoggedIn =
+    localStorage.getItem("foodiehub_phone_auth") === "true";
   const foodItems =
     backendItems && backendItems.length > 0 ? backendItems : SEED_FOOD_ITEMS;
 
-  const isLoggedIn = !!identity;
+  const isLoggedIn = !!identity || isPhoneLoggedIn;
+  const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
   const isLoggingIn = loginStatus === "logging-in";
+
+  const handleSignOut = () => {
+    localStorage.removeItem("foodiehub_phone_auth");
+    clear();
+  };
 
   if (isInitializing || adminLoading) {
     return (
@@ -77,26 +86,19 @@ export default function ManagePage() {
             Sign in to access the FoodieHub Management Hub
           </p>
           <Button
-            onClick={() => login()}
+            onClick={() => navigate({ to: "/login" })}
             disabled={isLoggingIn}
             className="w-full bg-primary text-primary-foreground rounded-xl btn-green-glow h-12"
             data-ocid="manage.primary_button"
           >
-            {isLoggingIn ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign In"
-            )}
+            Sign In
           </Button>
         </div>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!effectiveIsAdmin) {
     return (
       <div
         className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4"
@@ -109,7 +111,7 @@ export default function ManagePage() {
         </p>
         <Button
           variant="outline"
-          onClick={() => clear()}
+          onClick={handleSignOut}
           className="rounded-xl"
         >
           <LogOut className="w-4 h-4 mr-2" />
@@ -236,7 +238,7 @@ export default function ManagePage() {
             </Link>
             <Button
               variant="ghost"
-              onClick={() => clear()}
+              onClick={handleSignOut}
               className="rounded-xl text-muted-foreground"
               data-ocid="manage.secondary_button"
             >
