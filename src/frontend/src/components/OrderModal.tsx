@@ -75,8 +75,9 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
       });
       setSuccess(true);
       clearCart();
-    } catch {
-      toast.error("Failed to place order. Please try again.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Order failed: ${msg}. Please try again.`);
     }
   };
 

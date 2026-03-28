@@ -16,12 +16,7 @@ export function useActor() {
 
       if (!isAuthenticated) {
         // Return anonymous actor if not authenticated
-        const actor = await createActorWithConfig();
-        const adminToken = getSecretParameter("caffeineAdminToken");
-        if (adminToken) {
-          await actor._initializeAccessControlWithSecret(adminToken);
-        }
-        return actor;
+        return await createActorWithConfig();
       }
 
       const actorOptions = {
@@ -31,10 +26,8 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      const adminToken = getSecretParameter("caffeineAdminToken");
-      if (adminToken) {
-        await actor._initializeAccessControlWithSecret(adminToken);
-      }
+      const adminToken = getSecretParameter("caffeineAdminToken") || "";
+      await actor._initializeAccessControlWithSecret(adminToken);
       return actor;
     },
     // Only refetch when identity changes
