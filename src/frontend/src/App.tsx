@@ -12,6 +12,7 @@ import DeliveryPage from "./pages/DeliveryPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ManagePage from "./pages/ManagePage";
+import OrdersPage from "./pages/OrdersPage";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -52,12 +53,19 @@ const manageRoute = createRoute({
   component: ManagePage,
 });
 
+const ordersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/orders",
+  component: OrdersPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
   adminRoute,
   deliveryRoute,
   manageRoute,
+  ordersRoute,
 ]);
 const router = createRouter({ routeTree });
 

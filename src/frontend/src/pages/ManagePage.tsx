@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   Loader2,
   LogOut,
+  PackageOpen,
   ShieldOff,
   Truck,
   UtensilsCrossed,
@@ -193,6 +194,16 @@ export default function ManagePage() {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <Link to="/orders">
+              <Button
+                variant="ghost"
+                className="rounded-xl text-muted-foreground"
+                data-ocid="manage.link"
+              >
+                <PackageOpen className="w-4 h-4 mr-2" />
+                Orders
+              </Button>
+            </Link>
             <Link to="/admin">
               <Button
                 variant="ghost"
@@ -257,7 +268,7 @@ export default function ManagePage() {
         {/* Quick Actions */}
         <section>
           <h2 className="font-display font-bold text-xl mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
             <Link to="/admin">
               <div
                 className="glass-card rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer hover:border-primary/40 transition-all hover:bg-primary/5 group"
@@ -277,6 +288,25 @@ export default function ManagePage() {
               </div>
             </Link>
 
+            <Link to="/orders">
+              <div
+                className="glass-card rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer hover:border-purple-500/40 transition-all hover:bg-purple-500/5 group"
+                data-ocid="manage.link"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
+                  <PackageOpen className="w-7 h-7 text-purple-400" />
+                </div>
+                <div>
+                  <p className="font-display font-semibold text-base">
+                    Order Manager
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    View, search &amp; update all orders
+                  </p>
+                </div>
+              </div>
+            </Link>
+
             <Link to="/delivery">
               <div
                 className="glass-card rounded-2xl p-6 flex flex-col items-center gap-3 text-center cursor-pointer hover:border-orange-500/40 transition-all hover:bg-orange-500/5 group"
@@ -287,7 +317,7 @@ export default function ManagePage() {
                 </div>
                 <div>
                   <p className="font-display font-semibold text-base">
-                    Delivery Manager
+                    Delivery Kanban
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Track and update order statuses
@@ -319,12 +349,23 @@ export default function ManagePage() {
 
         {/* Recent Orders */}
         <section>
-          <h2 className="font-display font-bold text-xl mb-4">
-            Recent Orders{" "}
-            <span className="text-muted-foreground font-normal text-sm">
-              (last 10)
-            </span>
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display font-bold text-xl">
+              Recent Orders{" "}
+              <span className="text-muted-foreground font-normal text-sm">
+                (last 10)
+              </span>
+            </h2>
+            <Link to="/orders">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-xl border-border/40 text-xs"
+              >
+                View All Orders
+              </Button>
+            </Link>
+          </div>
           {recentOrders.length === 0 ? (
             <div
               className="glass-card rounded-2xl py-16 text-center text-muted-foreground"
