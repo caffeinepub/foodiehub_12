@@ -15,6 +15,7 @@ import { useCart } from "../context/CartContext";
 import { useCreateOrder } from "../hooks/useQueries";
 
 const DELIVERY_FEE = 10;
+const MINIMUM_ORDER = 60;
 
 interface OrderModalProps {
   open: boolean;
@@ -38,6 +39,12 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (subtotal < MINIMUM_ORDER) {
+      toast.error(
+        `Minimum order amount is ₹${MINIMUM_ORDER}. Please add more items.`,
+      );
+      return;
+    }
     if (!form.name || !form.address || !form.phone) {
       toast.error("Please fill all required fields");
       return;
@@ -116,6 +123,12 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {subtotal < MINIMUM_ORDER && (
+              <div className="text-sm text-amber-500 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-2 text-center">
+                Minimum order is ₹{MINIMUM_ORDER}. Add ₹
+                {MINIMUM_ORDER - subtotal} more to proceed.
+              </div>
+            )}
             <div className="space-y-1">
               <Label htmlFor="name">Full Name *</Label>
               <Input
@@ -221,8 +234,8 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
             </div>
             <Button
               type="submit"
-              disabled={createOrder.isPending}
-              className="w-full h-12 bg-primary text-primary-foreground rounded-2xl font-semibold btn-green-glow hover:bg-primary/90"
+              disabled={createOrder.isPending || subtotal < MINIMUM_ORDER}
+              className="w-full h-12 bg-primary text-primary-foreground rounded-2xl font-semibold btn-green-glow hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
               data-ocid="order.submit_button"
             >
               {createOrder.isPending ? (
@@ -230,6 +243,8 @@ export default function OrderModal({ open, onClose }: OrderModalProps) {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Placing Order...
                 </>
+              ) : subtotal < MINIMUM_ORDER ? (
+                `Min. order ₹${MINIMUM_ORDER}`
               ) : (
                 `Place Order · ₹${total}`
               )}

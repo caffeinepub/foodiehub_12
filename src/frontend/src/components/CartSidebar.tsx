@@ -5,6 +5,7 @@ import { Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 const DELIVERY_FEE = 10;
+const MINIMUM_ORDER = 60;
 
 interface CartSidebarProps {
   open: boolean;
@@ -18,6 +19,7 @@ export default function CartSidebar({
   onPlaceOrder,
 }: CartSidebarProps) {
   const { items, updateQuantity, subtotal, totalItems } = useCart();
+  const belowMinimum = subtotal < MINIMUM_ORDER;
 
   return (
     <>
@@ -135,12 +137,19 @@ export default function CartSidebar({
                 <span>₹{subtotal + DELIVERY_FEE}</span>
               </div>
             </div>
+            {belowMinimum && (
+              <div className="text-xs text-amber-500 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-2 text-center">
+                Minimum order is ₹{MINIMUM_ORDER}. Add ₹
+                {MINIMUM_ORDER - subtotal} more to place your order.
+              </div>
+            )}
             <Button
               onClick={onPlaceOrder}
-              className="w-full h-12 bg-primary text-primary-foreground rounded-2xl font-semibold btn-green-glow hover:bg-primary/90"
+              disabled={belowMinimum}
+              className="w-full h-12 bg-primary text-primary-foreground rounded-2xl font-semibold btn-green-glow hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
               data-ocid="cart.primary_button"
             >
-              Place Order
+              {belowMinimum ? `Min. order ₹${MINIMUM_ORDER}` : "Place Order"}
             </Button>
           </div>
         )}
