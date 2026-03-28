@@ -133,6 +133,28 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
       "/assets/uploads/2-25l-thums-up-019d35e9-b305-725a-89d8-39d2172ebdc9-1.jpg",
     isAvailable: true,
   },
+  {
+    id: BigInt(13),
+    name: "Sting Energy Drink",
+    category: "Drinks",
+    price: 30,
+    description:
+      "Sting energy drink with a bold berry blast flavour. Stimulates mind, energises body. Best served chilled.",
+    imageUrl:
+      "/assets/uploads/download-019d35fe-2590-7558-8b09-175703686ba0-1.webp",
+    isAvailable: true,
+  },
+  {
+    id: BigInt(14),
+    name: "Predator Energy (Gold Strike)",
+    category: "Drinks",
+    price: 90,
+    description:
+      "Predator Energy Gold Strike -- carbonated caffeinated beverage with a bold, refreshing taste. Best served chilled.",
+    imageUrl:
+      "/assets/uploads/shopping-019d360f-ee53-7533-83a8-a3835da3f6a3-1.webp",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -158,4 +180,6 @@ export const RATINGS: Record<string, number> = {
   "Kathi Roll (1 pc)": 4.5,
   "Payaj Vara (4 pcs)": 4.5,
   "Thums Up (2.25 ltr)": 4.6,
+  "Sting Energy Drink": 4.7,
+  "Predator Energy (Gold Strike)": 4.8,
 };
