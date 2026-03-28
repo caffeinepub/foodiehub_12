@@ -152,7 +152,7 @@ export default function HomePage() {
               <h4 className="font-semibold text-sm mb-3">Contact</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>support@foodiehub.com</li>
-                <li>+91 9337333639</li>
+                <li>+91 7750049306</li>
               </ul>
             </div>
           </div>
