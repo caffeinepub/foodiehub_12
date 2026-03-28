@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 1rem;
+    /* FoodieHub dark theme */
+    --background: 0.11 0.008 220;
+    --foreground: 0.94 0.01 220;
+    --card: 0.15 0.012 220;
+    --card-foreground: 0.94 0.01 220;
+    --popover: 0.15 0.012 220;
+    --popover-foreground: 0.94 0.01 220;
+    --primary: 0.72 0.18 160;
+    --primary-foreground: 0.11 0.008 220;
+    --secondary: 0.18 0.014 220;
+    --secondary-foreground: 0.94 0.01 220;
+    --muted: 0.18 0.014 220;
+    --muted-foreground: 0.62 0.02 220;
+    --accent: 0.18 0.014 220;
+    --accent-foreground: 0.94 0.01 220;
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.97 0.01 80;
+    --border: 0.22 0.01 220;
+    --input: 0.22 0.01 220;
+    --ring: 0.72 0.18 160;
+    --brand-green: 0.72 0.18 160;
+    --star-gold: 0.82 0.18 80;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Figtree", sans-serif;
+  }
+}
+
+.font-display {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Food card hover */
+.food-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px oklch(0 0 0 / 0.5), 0 0 0 1px
+    oklch(var(--primary) / 0.2);
+}
+
+/* Green glow button */
+.btn-green-glow:hover {
+  box-shadow: 0 4px 20px oklch(var(--primary) / 0.4);
+}
+
+/* Hero gradient overlay */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    oklch(0.11 0.008 220 / 0.5) 0%,
+    oklch(0.11 0.008 220 / 0.75) 60%,
+    oklch(0.11 0.008 220 / 0.95) 100%
+  );
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: oklch(0.15 0.012 220 / 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(1 0 0 / 0.08);
+}
+
+/* Star rating color */
+.star-gold {
+  color: oklch(var(--star-gold));
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.11 0.008 220);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.25 0.01 220);
+  border-radius: 3px;
+}
