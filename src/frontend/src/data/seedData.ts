@@ -122,6 +122,17 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
       "/assets/uploads/images_4-019d354f-96e7-764a-af0a-f0f9c9a93175-1.jpeg",
     isAvailable: true,
   },
+  {
+    id: BigInt(12),
+    name: "Thums Up (2.25 ltr)",
+    category: "Drinks",
+    price: 30,
+    description:
+      "Thums Up 2.25 litre party pack. Bold cola taste, best served chilled.",
+    imageUrl:
+      "/assets/uploads/2-25l-thums-up-019d35e9-b305-725a-89d8-39d2172ebdc9-1.jpg",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -146,4 +157,5 @@ export const RATINGS: Record<string, number> = {
   "Samosa (6 pcs)": 4.6,
   "Kathi Roll (1 pc)": 4.5,
   "Payaj Vara (4 pcs)": 4.5,
+  "Thums Up (2.25 ltr)": 4.6,
 };
