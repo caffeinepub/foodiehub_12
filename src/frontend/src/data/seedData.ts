@@ -166,6 +166,16 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
       "/assets/uploads/71km7jsjzfl._sl1500-019d3619-f7db-715a-aa62-f0ecffff9fc9-1.jpg",
     isAvailable: true,
   },
+  {
+    id: BigInt(16),
+    name: "Mistry Chips",
+    category: "Snacks",
+    price: 25,
+    description:
+      "Crunchy and tasty Mistry chips, perfect for snacking anytime.",
+    imageUrl: "",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -194,4 +204,5 @@ export const RATINGS: Record<string, number> = {
   "Sting Energy Drink": 4.7,
   "Predator Energy (Gold Strike)": 4.8,
   "Tata Gluco+ Lemony Zing": 4.5,
+  "Mistry Chips": 4.4,
 };
