@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Loader2,
@@ -32,7 +32,7 @@ import {
   Truck,
   UtensilsCrossed,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { FoodItem } from "../backend.d";
 import { SEED_FOOD_ITEMS } from "../data/seedData";
@@ -72,6 +72,7 @@ export default function AdminPage() {
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
   const { data: backendItems } = useAllFoodItems();
   const { data: orders } = useAllOrders();
+  const navigate = useNavigate();
   const foodItems =
     backendItems && backendItems.length > 0 ? backendItems : SEED_FOOD_ITEMS;
 
@@ -89,6 +90,28 @@ export default function AdminPage() {
   const isLoggedIn = !!identity || isPhoneLoggedIn;
   const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
   const isLoggingIn = loginStatus === "logging-in";
+
+  // Auto-redirect II users who aren't admins back to login
+  useEffect(() => {
+    if (
+      !isInitializing &&
+      !adminLoading &&
+      !!identity &&
+      !isPhoneLoggedIn &&
+      isAdmin === false
+    ) {
+      clear();
+      navigate({ to: "/login" });
+    }
+  }, [
+    isInitializing,
+    adminLoading,
+    identity,
+    isPhoneLoggedIn,
+    isAdmin,
+    clear,
+    navigate,
+  ]);
 
   const handleSignOut = () => {
     localStorage.removeItem("foodiehub_phone_auth");

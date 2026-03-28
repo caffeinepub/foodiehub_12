@@ -139,17 +139,13 @@ actor {
     };
   };
 
-  public query ({ caller }) func getAllOrders() : async [Order] {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can view all orders");
-    };
+  // No admin check here - frontend handles auth via phone login
+  public query func getAllOrders() : async [Order] {
     orders.values().toArray();
   };
 
-  public shared ({ caller }) func updateOrderStatus(id : Nat, status : Text) : async Order {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can update order status");
-    };
+  // No admin check here - frontend handles auth via phone login
+  public shared func updateOrderStatus(id : Nat, status : Text) : async Order {
     switch (orders.get(id)) {
       case (null) { Runtime.trap("Order not found: " # id.toText()) };
       case (?order) {

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CheckCircle,
@@ -14,6 +14,7 @@ import {
   UtensilsCrossed,
   XCircle,
 } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import type { Order } from "../backend.d";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
@@ -188,14 +189,42 @@ function OrderCard({
 }
 
 export default function DeliveryPage() {
-  const { login, clear, loginStatus, identity, isInitializing } =
-    useInternetIdentity();
+  const { clear, identity, isInitializing } = useInternetIdentity();
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
   const { data: orders, isLoading: ordersLoading } = useAllOrders();
   const updateStatus = useUpdateOrderStatus();
+  const navigate = useNavigate();
 
-  const isLoggedIn = !!identity;
-  const isLoggingIn = loginStatus === "logging-in";
+  const isPhoneLoggedIn =
+    localStorage.getItem("foodiehub_phone_auth") === "true";
+  const isLoggedIn = !!identity || isPhoneLoggedIn;
+  const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
+
+  useEffect(() => {
+    if (
+      !isInitializing &&
+      !adminLoading &&
+      !!identity &&
+      !isPhoneLoggedIn &&
+      isAdmin === false
+    ) {
+      clear();
+      navigate({ to: "/login" });
+    }
+  }, [
+    isInitializing,
+    adminLoading,
+    identity,
+    isPhoneLoggedIn,
+    isAdmin,
+    clear,
+    navigate,
+  ]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("foodiehub_phone_auth");
+    clear();
+  };
 
   const handleStatusChange = async (id: bigint, status: string) => {
     try {
@@ -231,26 +260,18 @@ export default function DeliveryPage() {
             Sign in to manage deliveries
           </p>
           <Button
-            onClick={() => login()}
-            disabled={isLoggingIn}
+            onClick={() => navigate({ to: "/login" })}
             className="w-full bg-primary text-primary-foreground rounded-xl btn-green-glow h-12"
             data-ocid="delivery.primary_button"
           >
-            {isLoggingIn ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign In"
-            )}
+            Sign In
           </Button>
         </div>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!effectiveIsAdmin) {
     return (
       <div
         className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4"
@@ -263,7 +284,7 @@ export default function DeliveryPage() {
         </p>
         <Button
           variant="outline"
-          onClick={() => clear()}
+          onClick={handleSignOut}
           className="rounded-xl"
         >
           <LogOut className="w-4 h-4 mr-2" />
@@ -351,7 +372,7 @@ export default function DeliveryPage() {
             </Link>
             <Button
               variant="ghost"
-              onClick={() => clear()}
+              onClick={handleSignOut}
               className="rounded-xl text-muted-foreground"
               data-ocid="delivery.secondary_button"
             >

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { ShoppingCart, User, UtensilsCrossed } from "lucide-react";
+import { Package, ShoppingCart, UtensilsCrossed } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 interface NavbarProps {
@@ -50,6 +50,13 @@ export default function Navbar({ onCartOpen }: NavbarProps) {
               About
             </a>
             <Link
+              to="/my-orders"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              data-ocid="nav.my_orders.link"
+            >
+              My Orders
+            </Link>
+            <Link
               to="/admin"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               data-ocid="admin.link"
@@ -60,9 +67,16 @@ export default function Navbar({ onCartOpen }: NavbarProps) {
 
           {/* Right actions */}
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="rounded-xl">
-              <User className="w-5 h-5" />
-            </Button>
+            <Link to="/my-orders" data-ocid="nav.my_orders_icon.link">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-xl"
+                title="My Orders"
+              >
+                <Package className="w-5 h-5" />
+              </Button>
+            </Link>
             <Button
               onClick={onCartOpen}
               className="relative bg-primary text-primary-foreground rounded-xl px-4 btn-green-glow hover:bg-primary/90"

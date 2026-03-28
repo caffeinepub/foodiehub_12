@@ -19,6 +19,7 @@ import {
   Truck,
   UtensilsCrossed,
 } from "lucide-react";
+import { useEffect } from "react";
 import { SEED_FOOD_ITEMS } from "../data/seedData";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 import { useAllFoodItems, useAllOrders, useIsAdmin } from "../hooks/useQueries";
@@ -55,6 +56,28 @@ export default function ManagePage() {
   const isLoggedIn = !!identity || isPhoneLoggedIn;
   const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
   const isLoggingIn = loginStatus === "logging-in";
+
+  // Auto-redirect II users who aren't admins back to login
+  useEffect(() => {
+    if (
+      !isInitializing &&
+      !adminLoading &&
+      !!identity &&
+      !isPhoneLoggedIn &&
+      isAdmin === false
+    ) {
+      clear();
+      navigate({ to: "/login" });
+    }
+  }, [
+    isInitializing,
+    adminLoading,
+    identity,
+    isPhoneLoggedIn,
+    isAdmin,
+    clear,
+    navigate,
+  ]);
 
   const handleSignOut = () => {
     localStorage.removeItem("foodiehub_phone_auth");

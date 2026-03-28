@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowUpDown,
   CheckCircle,
@@ -33,7 +33,7 @@ import {
   X,
   XCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { Order } from "../backend.d";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
@@ -269,19 +269,47 @@ type SortKey = "id" | "totalAmount" | "createdAt";
 type SortDir = "asc" | "desc";
 
 export default function OrdersPage() {
-  const { login, clear, loginStatus, identity, isInitializing } =
-    useInternetIdentity();
+  const { clear, identity, isInitializing } = useInternetIdentity();
   const { data: isAdmin, isLoading: adminLoading } = useIsAdmin();
   const { data: orders, isLoading: ordersLoading } = useAllOrders();
   const updateStatus = useUpdateOrderStatus();
+  const navigate = useNavigate();
+
+  const isPhoneLoggedIn =
+    localStorage.getItem("foodiehub_phone_auth") === "true";
+  const isLoggedIn = !!identity || isPhoneLoggedIn;
+  const effectiveIsAdmin = isPhoneLoggedIn || isAdmin;
+
+  useEffect(() => {
+    if (
+      !isInitializing &&
+      !adminLoading &&
+      !!identity &&
+      !isPhoneLoggedIn &&
+      isAdmin === false
+    ) {
+      clear();
+      navigate({ to: "/login" });
+    }
+  }, [
+    isInitializing,
+    adminLoading,
+    identity,
+    isPhoneLoggedIn,
+    isAdmin,
+    clear,
+    navigate,
+  ]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("foodiehub_phone_auth");
+    clear();
+  };
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
-
-  const isLoggedIn = !!identity;
-  const isLoggingIn = loginStatus === "logging-in";
 
   const handleStatusChange = async (id: bigint, status: string) => {
     try {
@@ -333,26 +361,18 @@ export default function OrdersPage() {
             Sign in to manage all orders
           </p>
           <Button
-            onClick={() => login()}
-            disabled={isLoggingIn}
+            onClick={() => navigate({ to: "/login" })}
             className="w-full bg-primary text-primary-foreground rounded-xl btn-green-glow h-12"
             data-ocid="orders.primary_button"
           >
-            {isLoggingIn ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign In"
-            )}
+            Sign In
           </Button>
         </div>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!effectiveIsAdmin) {
     return (
       <div
         className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4"
@@ -365,7 +385,7 @@ export default function OrdersPage() {
         </p>
         <Button
           variant="outline"
-          onClick={() => clear()}
+          onClick={handleSignOut}
           className="rounded-xl"
         >
           <LogOut className="w-4 h-4 mr-2" />
@@ -487,7 +507,7 @@ export default function OrdersPage() {
             </Link>
             <Button
               variant="ghost"
-              onClick={() => clear()}
+              onClick={handleSignOut}
               className="rounded-xl text-muted-foreground"
               data-ocid="orders.secondary_button"
             >
