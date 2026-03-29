@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
 import { useCreateOrder } from "../hooks/useQueries";
 
-const DELIVERY_FEE = 10;
+const DELIVERY_FEE = 20;
 const MINIMUM_ORDER = 60;
 
 interface OrderModalProps {

@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
-const DELIVERY_FEE = 10;
+const DELIVERY_FEE = 20;
 const MINIMUM_ORDER = 60;
 
 interface CartSidebarProps {

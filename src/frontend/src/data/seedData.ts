@@ -60,7 +60,7 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
     id: BigInt(6),
     name: "Chicken Biryani (5 pcs)",
     category: "Biryani",
-    price: 500,
+    price: 120,
     description:
       "Aromatic basmati rice cooked with tender chicken pieces, caramelized onions, fresh mint and exotic spices. Served with raita.",
     imageUrl:
@@ -186,6 +186,16 @@ export const SEED_FOOD_ITEMS: FoodItem[] = [
     imageUrl: "",
     isAvailable: true,
   },
+  {
+    id: BigInt(18),
+    name: "Chaumin (1 pc)",
+    category: "Snacks",
+    price: 60,
+    description:
+      "Delicious stir-fried chaumin noodles tossed with vegetables and spices. Served hot.",
+    imageUrl: "",
+    isAvailable: true,
+  },
 ];
 
 export const CATEGORIES = ["All", "Snacks", "Chicken", "Biryani", "Drinks"];
@@ -216,4 +226,5 @@ export const RATINGS: Record<string, number> = {
   "Tata Gluco+ Lemony Zing": 4.5,
   "Mistry Chips": 4.4,
   "Mistry Drink 🍷": 4.5,
+  "Chaumin (1 pc)": 4.5,
 };
